@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'header-desktop': "url('/images/bg-header-desktop.svg')",
+        'header-mobile': "url('/images/bg-header-mobile.svg')"
+      },
       colors: {
         'desaturate-dark-cyan': "hsl(180, 29%, 50%)",
         'light-gray-cyan': {
