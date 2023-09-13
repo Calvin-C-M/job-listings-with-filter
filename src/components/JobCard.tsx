@@ -1,50 +1,61 @@
+"use client"
 import { Jobs } from '@/interface/Jobs'
 import Image from 'next/image'
+import JobTags from './JobTags'
+import { useState } from 'react'
 
-export default function JobCard(props:Jobs) {
+export default function JobCard({
+    job,
+    filterHandler,
+}: {
+    job: Jobs,
+    filterHandler: any
+}) {
+    const [isHovering, setIsHovering] = useState(false)
+
     return (
-        <section className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg hover:shadow-desaturate-dark-cyan shadow-desaturate-dark-cyan hover:border-4 hover:border-white hover:border-l-desaturate-dark-cyan flex items-center justify-between transition-all duration-100">
+        <section onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:shadow-desaturate-dark-cyan shadow-desaturate-dark-cyan border-4 border-white hover:border-l-desaturate-dark-cyan hover:cursor-pointer flex items-center justify-between transition-all duration-100">
             <section className='flex items-center justify-center gap-3'>
                 <Image 
-                    src={props.logo}
-                    alt={props.company + " Logo"}
+                    src={job.logo}
+                    alt={job.company + " Logo"}
                     width={100}
                     height={100}
                     className="rounded-full"
                 />
                 <section className="flex flex-col gap-2 text-white">
                     <section className="flex items-center gap-3 font-semibold">
-                        <span className='text-desaturate-dark-cyan'>{props.company}</span>
+                        <span className='text-desaturate-dark-cyan'>{job.company}</span>
                         {
-                            (props.new) && 
+                            (job.new) && 
                             <span className="font-bold bg-desaturate-dark-cyan pt-1 px-2 rounded-full">NEW!</span>
                         }
                         {
-                            (props.featured) &&
+                            (job.featured) &&
                             <span className="font-bold bg-black pt-1 px-2 rounded-full">FEATURED</span>                            
                         }
                     </section>
-                    <h2 className="text-black font-bold text-xl">{props.position}</h2>
+                    <h2 className={(isHovering ? "text-desaturate-dark-cyan" : "text-black") + " font-bold text-xl transition-all duration-100"}>{job.position}</h2>
                     <section className="text-dark-gray-cyan flex items-center justify-center gap-3">
-                        <span>{props.postedAt}</span>
+                        <span>{job.postedAt}</span>
                         <span>•</span>
-                        <span>{props.contract}</span>
+                        <span>{job.contract}</span>
                         <span>•</span>
-                        <span>{props.location}</span>
+                        <span>{job.location}</span>
                     </section>
                 </section>
             </section>
             <section className='flex items-center justify-end gap-3'>
-                <span className="font-semibold text-desaturate-dark-cyan bg-light-gray-cyan-2 pt-1 px-2 rounded-md">{props.role}</span>
-                <span className="font-semibold text-desaturate-dark-cyan bg-light-gray-cyan-2 pt-1 px-2 rounded-md">{props.level}</span>
+                <JobTags onClick={filterHandler}>{job.role}</JobTags>
+                <JobTags onClick={filterHandler}>{job.level}</JobTags>
                 {
-                    props.languages.map((language, index) => (
-                        <span key={index} className="font-semibold text-desaturate-dark-cyan bg-light-gray-cyan-2 pt-1 px-2 rounded-md">{language}</span>
+                    job.languages.map((language, index) => (
+                        <JobTags onClick={filterHandler}>{language}</JobTags>
                     ))
                 }
                 {
-                    props.tools.map((tool, index) => (
-                        <span key={index} className="font-semibold text-desaturate-dark-cyan bg-light-gray-cyan-2 pt-1 px-2 rounded-md">{tool}</span>
+                    job.tools.map((tool, index) => (
+                        <JobTags onClick={filterHandler}>{tool}</JobTags>
                     ))
                 }
             </section>
